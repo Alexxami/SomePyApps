@@ -10,7 +10,7 @@ from gi.repository import Gtk, Gdk, GLib
 
 class GrimScreenshotTool:
     def __init__(self):
-        # Paleta Catppuccin Mocha
+        # Catppuccin Mocha palette
         self.colors = {
             "base": "#1e1e2e",
             "mantle": "#181825",
@@ -153,7 +153,7 @@ class GrimScreenshotTool:
         style_context.add_class("window")
 
     def setup_ui(self):
-        # Frame para opciones de captura
+        # Capture options frame
         capture_frame = Gtk.Frame()
         capture_frame.get_style_context().add_class("frame")
         self.main_box.pack_start(capture_frame, False, False, 0)
@@ -161,35 +161,35 @@ class GrimScreenshotTool:
         capture_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         capture_frame.add(capture_box)
         
-        # Título
-        capture_title = Gtk.Label(label="<b>Modo de Captura</b>")
+        # Title
+        capture_title = Gtk.Label(label="<b>Capture Mode</b>")
         capture_title.set_use_markup(True)
         capture_title.get_style_context().add_class("title")
         capture_title.set_halign(Gtk.Align.START)
         capture_box.pack_start(capture_title, False, False, 0)
         
-        # Botones de modo de captura
+        # Capture mode buttons
         mode_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         capture_box.pack_start(mode_box, False, False, 0)
         
-        self.full_button = Gtk.Button(label="Pantalla Completa")
+        self.full_button = Gtk.Button(label="Full Screen")
         self.full_button.connect("clicked", self.on_capture_mode_changed, "full")
         self.full_button.get_style_context().add_class("mode-button")
         self.full_button.get_style_context().add_class("active")
         mode_box.pack_start(self.full_button, True, True, 0)
         
-        self.area_button = Gtk.Button(label="Seleccionar Área")
+        self.area_button = Gtk.Button(label="Select Area")
         self.area_button.connect("clicked", self.on_capture_mode_changed, "area")
         self.area_button.get_style_context().add_class("mode-button")
         mode_box.pack_start(self.area_button, True, True, 0)
         
-        # Checkbox para incluir cursor
-        self.cursor_check = Gtk.CheckButton(label="Incluir cursor")
+        # Include cursor checkbox
+        self.cursor_check = Gtk.CheckButton(label="Include Cursor")
         self.cursor_check.connect("toggled", self.on_cursor_toggled)
         self.cursor_check.get_style_context().add_class("checkbutton")
         capture_box.pack_start(self.cursor_check, False, False, 8)
         
-        # Frame para temporizador
+        # Timer frame
         timer_frame = Gtk.Frame()
         timer_frame.get_style_context().add_class("frame")
         self.main_box.pack_start(timer_frame, False, False, 8)
@@ -198,19 +198,19 @@ class GrimScreenshotTool:
         timer_box.get_style_context().add_class("timer-box")
         timer_frame.add(timer_box)
         
-        # Título
-        timer_title = Gtk.Label(label="<b>Temporizador (segundos)</b>")
+        # Title
+        timer_title = Gtk.Label(label="<b>Timer (seconds)</b>")
         timer_title.set_use_markup(True)
         timer_title.get_style_context().add_class("title")
         timer_title.set_halign(Gtk.Align.START)
         timer_box.pack_start(timer_title, False, False, 0)
         
-        # Entrada para temporizador
+        # Timer input
         self.timer_entry = Gtk.SpinButton.new_with_range(0, 60, 1)
         self.timer_entry.set_value(0)
         timer_box.pack_start(self.timer_entry, False, False, 8)
         
-        # Frame para formato de imagen
+        # Image format frame
         format_frame = Gtk.Frame()
         format_frame.get_style_context().add_class("frame")
         self.main_box.pack_start(format_frame, False, False, 8)
@@ -218,14 +218,14 @@ class GrimScreenshotTool:
         format_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         format_frame.add(format_box)
         
-        # Título
-        format_title = Gtk.Label(label="<b>Formato de Imagen</b>")
+        # Title
+        format_title = Gtk.Label(label="<b>Image Format</b>")
         format_title.set_use_markup(True)
         format_title.get_style_context().add_class("title")
         format_title.set_halign(Gtk.Align.START)
         format_box.pack_start(format_title, False, False, 0)
         
-        # Botones de formato
+        # Format buttons
         format_buttons_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
         format_box.pack_start(format_buttons_box, False, False, 0)
         
@@ -241,7 +241,7 @@ class GrimScreenshotTool:
             format_buttons_box.pack_start(btn, False, False, 0)
             self.format_buttons.append(btn)
         
-        # Frame para nombre y ruta
+        # Filename and path frame
         path_frame = Gtk.Frame()
         path_frame.get_style_context().add_class("frame")
         self.main_box.pack_start(path_frame, False, False, 8)
@@ -249,28 +249,28 @@ class GrimScreenshotTool:
         path_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=8)
         path_frame.add(path_box)
         
-        # Título
-        path_title = Gtk.Label(label="<b>Nombre y Ruta</b>")
+        # Title
+        path_title = Gtk.Label(label="<b>Filename and Path</b>")
         path_title.set_use_markup(True)
         path_title.get_style_context().add_class("title")
         path_title.set_halign(Gtk.Align.START)
         path_box.pack_start(path_title, False, False, 0)
         
-        # Entrada para nombre de archivo
+        # Filename entry
         self.filename_entry = Gtk.Entry()
         self.filename_entry.set_text(self.default_filename())
         self.filename_entry.get_style_context().add_class("entry")
         path_box.pack_start(self.filename_entry, False, False, 0)
         
-        # Botón de captura
-        self.capture_button = Gtk.Button(label="Capturar Pantalla")
+        # Capture button
+        self.capture_button = Gtk.Button(label="Take Screenshot")
         self.capture_button.connect("clicked", self.on_capture_clicked)
         self.capture_button.get_style_context().add_class("capture-button")
         self.main_box.pack_start(self.capture_button, False, False, 12)
 
     def default_filename(self):
         now = datetime.now()
-        return f"captura_{now.strftime('%Y%m%d_%H%M%S')}.{self.image_format}"
+        return f"screenshot_{now.strftime('%Y%m%d_%H%M%S')}.{self.image_format}"
 
     def on_capture_mode_changed(self, button, mode):
         self.capture_mode = mode
@@ -307,9 +307,9 @@ class GrimScreenshotTool:
         
         if self.timer_delay > 0:
             self.capture_button.set_sensitive(False)
-            self.capture_button.set_label(f"Capturando en {self.timer_delay}...")
+            self.capture_button.set_label(f"Capturing in {self.timer_delay}...")
             
-            # Iniciar cuenta regresiva
+            # Start countdown
             threading.Thread(target=self.countdown_and_capture, args=(filename,), daemon=True).start()
         else:
             self.take_screenshot(filename)
@@ -322,7 +322,7 @@ class GrimScreenshotTool:
         GLib.idle_add(self.take_screenshot, filename)
 
     def update_button_label(self, seconds):
-        self.capture_button.set_label(f"Capturando en {seconds}...")
+        self.capture_button.set_label(f"Capturing in {seconds}...")
         return False
 
     def take_screenshot(self, filename):
@@ -340,16 +340,16 @@ class GrimScreenshotTool:
                     if stderr:
                         error_msg = stderr.decode().strip()
                         if "selection cancelled" in error_msg.lower():
-                            self.show_message("Captura cancelada", "No se seleccionó ningún área")
+                            self.show_message("Capture cancelled", "No area was selected")
                         else:
-                            self.show_message("Error en slurp", error_msg)
+                            self.show_message("Slurp error", error_msg)
                     self.reset_capture_button()
                     return
                 
                 selection = stdout.decode().strip()
                 cmd.extend(["-g", selection])
             except FileNotFoundError:
-                self.show_message("Error", "slurp no está instalado. Es necesario para seleccionar áreas.")
+                self.show_message("Error", "slurp is not installed. Required for area selection.")
                 self.reset_capture_button()
                 return
         
@@ -357,18 +357,18 @@ class GrimScreenshotTool:
         
         try:
             result = subprocess.run(cmd, check=True, capture_output=True, text=True)
-            self.show_message("Captura exitosa", f"Imagen guardada como:\n{filename}")
+            self.show_message("Success", f"Image saved as:\n{filename}")
             self.filename_entry.set_text(self.default_filename())
         except subprocess.CalledProcessError as e:
             error_msg = e.stderr if e.stderr else str(e)
-            self.show_message("Error al capturar", error_msg)
+            self.show_message("Capture error", error_msg)
         except FileNotFoundError:
-            self.show_message("Error", "grim no está instalado. Instálalo con:\nsudo apt install grim slurp")
+            self.show_message("Error", "grim is not installed. Install with:\nsudo apt install grim slurp")
         finally:
             self.reset_capture_button()
 
     def reset_capture_button(self):
-        self.capture_button.set_label("Capturar Pantalla")
+        self.capture_button.set_label("Take Screenshot")
         self.capture_button.set_sensitive(True)
 
     def show_message(self, title, message):
