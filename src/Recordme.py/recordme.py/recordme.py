@@ -10,30 +10,30 @@ class MochaRecorder:
     def __init__(self):
         self.process = None
         
-        # Paleta Catppuccin Mocha
+        # Catppuccin Mocha palette
         self.colors = {
             "base": "#1e1e2e",          # Base
             "mantle": "#181825",         # Mantle
             "crust": "#11111b",          # Crust
             "text": "#cdd6f4",           # Text
-            "subtext1": "#bac2de",      # Subtext1
-            "green": "#a6e3a1",         # Green
+            "subtext1": "#bac2de",       # Subtext1
+            "green": "#a6e3a1",          # Green
             "blue": "#89b4fa",           # Blue
             "lavender": "#b4befe",       # Lavender
-            "border": "#a6e3a1",        # Borde verde
-            "input_bg": "#313244",       # Fondo del input
+            "border": "#a6e3a1",         # Green border
+            "input_bg": "#313244",       # Input background
         }
         
-        # Configurar ventana
+        # Configure window
         self.window = Gtk.Window(title="☕ Mocha Recorder")
-        self.window.set_default_size(320, 240)  # Aumentado para íconos grandes
+        self.window.set_default_size(320, 240)  # Increased for larger icons
         self.window.set_resizable(False)
         self.window.connect("destroy", Gtk.main_quit)
         
-        # Aplicar CSS
+        # Apply CSS
         self.apply_css()
         
-        # Contenedor principal
+        # Main container
         self.box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
         self.box.set_margin_top(16)
         self.box.set_margin_bottom(16)
@@ -41,13 +41,13 @@ class MochaRecorder:
         self.box.set_margin_end(16)
         self.window.add(self.box)
         
-        # Icono principal (más grande)
+        # Main icon (larger)
         self.icon = Gtk.Label()
-        self.icon.set_markup('<span font="28">󰄀</span>')  # Tamaño de fuente aumentado
+        self.icon.set_markup('<span font="28">󰄀</span>')  # Increased font size
         self.icon.set_margin_bottom(12)
         self.box.pack_start(self.icon, False, False, 0)
         
-        # Campo de texto para el nombre del archivo
+        # Filename entry field
         self.file_frame = Gtk.Frame()
         self.file_frame.get_style_context().add_class("file-frame")
         
@@ -57,9 +57,9 @@ class MochaRecorder:
         self.file_box.set_margin_start(8)
         self.file_box.set_margin_end(8)
         
-        self.file_label = Gtk.Label(label="Nombre:")
+        self.file_label = Gtk.Label(label="Name:")
         self.file_entry = Gtk.Entry()
-        self.file_entry.set_placeholder_text("grabacion.mkv")
+        self.file_entry.set_placeholder_text("recording.mkv")
         self.file_entry.set_text(self.default_filename())
         self.file_entry.get_style_context().add_class("file-entry")
         
@@ -68,10 +68,10 @@ class MochaRecorder:
         self.file_frame.add(self.file_box)
         self.box.pack_start(self.file_frame, False, False, 8)
         
-        # Botón con ícono más grande
+        # Button with larger icon
         self.record_button_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
         self.record_button_icon = Gtk.Label()
-        self.record_button_icon.set_markup('<span font="16">󰑭</span>')  # Ícono en el botón
+        self.record_button_icon.set_markup('<span font="16">󰑭</span>')  # Button icon
         self.record_button_label = Gtk.Label(label="RECORD")
         self.record_button_box.pack_start(self.record_button_icon, False, False, 0)
         self.record_button_box.pack_start(self.record_button_label, False, False, 0)
@@ -82,17 +82,17 @@ class MochaRecorder:
         self.record_button.get_style_context().add_class("record-button")
         self.box.pack_start(self.record_button, False, False, 0)
         
-        # Estado
-        self.status_label = Gtk.Label(label="Preparado para grabar")
+        # Status
+        self.status_label = Gtk.Label(label="Ready to record")
         self.status_label.get_style_context().add_class("status-label")
         self.box.pack_start(self.status_label, False, False, 12)
         
         self.window.show_all()
     
     def default_filename(self):
-        """Genera un nombre de archivo por defecto con la fecha y hora"""
+        """Generate a default filename with date and time"""
         now = datetime.now()
-        return f"grabacion_{now.strftime('%Y%m%d_%H%M%S')}.mkv"
+        return f"recording_{now.strftime('%Y%m%d_%H%M%S')}.mkv"
     
     def apply_css(self):
         css = f"""
@@ -164,26 +164,26 @@ class MochaRecorder:
                     filename += '.mkv'
                 
                 self.process = subprocess.Popen(["wf-recorder", "-f", filename])
-                # Actualizar íconos
-                self.icon.set_markup('<span font="28">󰑋</span>')  # Ícono de grabación grande
-                self.record_button_icon.set_markup('<span font="16">󰓛</span>')  # Ícono de stop
+                # Update icons
+                self.icon.set_markup('<span font="28">󰑋</span>')  # Large recording icon
+                self.record_button_icon.set_markup('<span font="16">󰓛</span>')  # Stop icon
                 self.record_button_label.set_text("STOP")
                 self.status_label.set_markup(
-                    f'<span foreground="{self.colors["green"]}" weight="bold">GRABANDO: {filename}</span>'
+                    f'<span foreground="{self.colors["green"]}" weight="bold">RECORDING: {filename}</span>'
                 )
             except FileNotFoundError:
                 self.show_error_dialog()
         else:
             self.process.send_signal(signal.SIGINT)
             self.process = None
-            # Restaurar íconos
-            self.icon.set_markup('<span font="28">󰄀</span>')  # Ícono de cámara grande
-            self.record_button_icon.set_markup('<span font="16">󰑭</span>')  # Ícono de record
+            # Restore icons
+            self.icon.set_markup('<span font="28">󰄀</span>')  # Large camera icon
+            self.record_button_icon.set_markup('<span font="16">󰑭</span>')  # Record icon
             self.record_button_label.set_text("RECORD")
             self.status_label.set_markup(
-                f'<span foreground="{self.colors["blue"]}">Grabación guardada</span>'
+                f'<span foreground="{self.colors["blue"]}">Recording saved</span>'
             )
-            # Actualizar el nombre para la próxima grabación
+            # Update filename for next recording
             self.file_entry.set_text(self.default_filename())
     
     def show_error_dialog(self):
@@ -192,9 +192,9 @@ class MochaRecorder:
             flags=0,
             message_type=Gtk.MessageType.ERROR,
             buttons=Gtk.ButtonsType.OK,
-            text="Error: wf-recorder no está instalado"
+            text="Error: wf-recorder is not installed"
         )
-        dialog.format_secondary_text("Instala con:\nsudo apt install wf-recorder")
+        dialog.format_secondary_text("Install with:\nsudo apt install wf-recorder")
         dialog.run()
         dialog.destroy()
 
