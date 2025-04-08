@@ -1,0 +1,8 @@
+[Desktop Entry]
+Terminal=false
+Type=Application
+StartupNotify=false
+Name=Screenme.py
+Exec=python3 /usr/share/applications/screenme.py/screenme.py
+Icon=camera
+Name[es_ES]=Screenme.py.desktop
